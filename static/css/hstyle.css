@@ -1,0 +1,145 @@
+
+        .body{
+        
+           background-color: #0e0d0d;
+           color: #e0e0e0; /* Light text for contrast */
+           font-family: 'Arial', sans-serif; /* Modern font */
+           margin: 0;
+           padding: 0;
+                }
+        .about{
+                    padding:12px 50px  ;
+                }
+        .navbar{
+        
+                    background-color:#f6f9f9;
+                    color: #e0e0e0;
+                    text-align: center;
+                    padding: 30px;  
+                    text-transform: capitalize;
+                }
+         .navbar:hover {
+            background-color: #faf9f9; 
+            border-color: #f7f4f4; 
+            transform: scale(1.02);
+            color: #060505;
+          }
+        
+                
+         .dark-button {
+            background-color: #060505; 
+            color: #e7dede; 
+            text-align: right   ;
+            padding: 10px 26px;  
+            font-size: 16px; 
+            border: 2px solid #f6f0f0; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.4s ease; 
+            
+          }
+        
+          
+        .dark-button:hover {
+            background-color: #faf9f9; 
+            border-color: #f7f4f4; 
+            transform: scale(1.1);
+            color: #060505;
+          }
+        
+          
+        .dark-button:active {
+            
+            background-color: #fbf9f9; /* Even darker shade on click */
+            border-color: #fcf8f8;
+            color: #f3ecec; /* Slightly lighter border when clicked */
+          }
+        
+          
+        .dark-button:focus {
+            outline: none; 
+            border-color: #0c0c0c; 
+          }
+        .button{
+        padding:24px  500px;
+          }
+        
+        .navbar ul {
+          list-style: none;
+          display: flex;
+          justify-content: center; /* Center the items */
+          gap: 30px; /* Space between the navigation items */
+        }
+        
+        .navbar ul li {
+          display: inline-block;
+        }
+        
+        .navbar a {
+          text-decoration: none;
+          color: #0a0909; /* White text */
+          font-size: 18px;
+          padding: 10px;
+          transition: all 0.3s ease-in-out; /* Smooth transition */
+          position: relative;
+        }
+        
+        /* Glowing effect on hover */
+        .navbar a:hover {
+          color: #fff; /* Maintain white text color on hover */
+          text-shadow: 0 0 5px #111111, 0 0 10px #070707, 0 0 15px #090909, 0 0 20px #090909; /* Glowing effect */
+        }
+        
+        /* Adding bottom glow on hover */
+        .navbar a::after {
+          content: '';
+          position: absolute;
+          bottom: -5px; /* Position the glow below the text */
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background-color: #040404; /* Pink glow color */
+          transform: scaleX(0); /* Initially hidden */
+          transform-origin: bottom right;
+          transition: transform 0.3s ease-out;
+        }
+        
+        .navbar a:hover::after {
+          transform: scaleX(1); /* Show glow when hovering */
+          transform-origin: bottom left;
+        }
+        
+        .l-button {
+            background-color: #f9f3f3; 
+            color: #0f0505; 
+            text-align: right   ;
+              
+            font-size: 16px; 
+            border: 2px solid #111111; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.4s ease;
+            top: 10px; /* 10px from the top of the viewport */
+          right: 10px; /* 10px from the right side of the viewport */
+          padding: 10px 20px; 
+            
+          }
+        .l-button:hover{
+            background-color: #080808; 
+            border-color: #0b0b0b; 
+            transform: scale(1.1);
+            color: #f3eaea;
+        }
+.l-button:active {
+            
+            background-color: #0b0b0b; /* Even darker shade on click */
+  border-color: #060606;
+            color: #f3ecec; /* Slightly lighter border when clicked */
+          }
+        
+          .l-button:focus {
+            outline: none; 
+            border-color: #f8f0f0; 
+          }
+            
+            
