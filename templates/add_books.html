@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea, button {
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Add a New Book</h2>
+    <form action="{{ url_for('add_book') }}" method="POST">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="author" placeholder="Author" required>
+        <input type="number" name="price" placeholder="Price" step="0.01" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <input type="text" name="cover_image" placeholder="Cover Image URL" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        
+        <label>
+            <input type="checkbox" name="top_seller" value="1"> Mark as Top Seller
+        </label>
+        
+        <!-- New field for stock -->
+        <input type="number" name="stock" placeholder="Stock Quantity" min="0" required>
+        
+        <button type="submit">Add Book</button>
+    </form>
+</body>
+</html>
