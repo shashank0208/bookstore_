@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+body{
+background-color: #060505;
+color: #f7f4f4;
+
+}
+
+.navbar
+{
+    background-color: rgb(251, 245, 245);
+    text-align: center;
+    padding: 40px;
+    text-transform: capitalize;
+}
+.navbar a {
+  text-decoration: none;
+  color: #0a0909; /* White text */
+  font-size: 18px;
+  padding: 10px;
+  transition: all 0.3s ease-in-out; /* Smooth transition */
+  position: relative;
+}
+
+/* Glowing effect on hover */
+.navbar a:hover {
+  color: #fff; /* Maintain white text color on hover */
+  text-shadow: 0 0 5px #111111, 0 0 10px #070707, 0 0 15px #090909, 0 0 20px #090909; /* Glowing effect */
+}
+.aurthors
+{
+    display: flex;
+    flex-direction: row;
+    margin: 40px;
+    align-content: center;
+    border: #f7f4f4;
+    color: #eeecf3;
+    width: 20px; 
+    height: auto;
+    gap: 40px;
+
+}
+.aur{
+    border: #eeecf3;
+    border-color: #eeecf3;
+    
+}
+.aurs{
+    border: 10ic;
+    border-color: #eeecf3;
+    
+}
+
+
+
+
+
+
+
+
+  .img{
+    background-color: #0c0b0b;
+  
+    border-radius: 10px;
+    border-color: #eee4e4;
+    padding: 10px;
+    height: 300px;
+    width:200px;
+    border: 2px solid white;
+
+}
+  
+
+  
+
+  
+</style>
+<body>
+    <div class="navbar">
+<a href="{{ url_for('home') }}">home</a>
+<a href="{{ url_for('topseller') }}">topseller</a>
+<a href="{{ url_for('authors') }}">authors</a>
+<a href="{{ url_for('genre') }}">genre</a>
+<a href="{{ url_for('audiobooks') }}">audio books</a>
+<button class="l-button"><a href="{{ url_for('login') }}">Login/Signup</a></button>
+
+    </div>
+    <p>this is aurthors </p>
+
+    <div class="aur">
+        <div class="aurs">
+            
+            <img class="img" src="https://m.media-amazon.com/images/I/81McpdT4NQL._SL1500_.jpg">
+        
+      <div class="details">
+        <p>agatha christie</p>
+      </div>
+            
+            
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
