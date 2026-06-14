@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hstyle.css') }}">
+
+<style>
+    .navbar {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        padding: 15px;
+        background-color: #f8f8f8;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: #1b1a1a;
+        font-size: 18px;
+        padding: 10px;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+    }
+
+    .navbar a:hover {
+        color: #0f0e0e;
+        text-shadow: 0 0 5px #141313, 0 0 10px #101010, 0 0 15px #850585, 0 0 20px #a30da3;
+    }
+
+    .navbar a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #090909;
+        transform: scaleY(0);
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+    }
+
+    .navbar a:hover::after {
+        transform: scaleY(1);
+        transform-origin: bottom left;
+    }
+</style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('topseller') }}">Top Seller</a>
+        <a href="{{ url_for('authors') }}">Authors</a>
+        <a href="{{ url_for('genre') }}">Genre</a>
+        <a href="{{ url_for('audiobooks') }}">Audio Books</a>
+        {% if is_admin %}<a href="{{ url_for('addbooks') }}">Add Books</a>{% endif %}
+        <a href="{{ url_for('view_cart') }}">Cart</a>
+        {% if current_user %}
+            <a href="{{ url_for('orders') }}">My Orders</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login/Signup</a>
+        {% endif %}
+    </div>
+
+    <div class="about">
+        <p>This is home</p>
+        <h1>ABOUT US</h1>
+        <p>This is a website for you to explore all kinds of books. For more options click on the explore button.</p>
+    </div>
+
+    <div class="button">
+        <a href="{{ url_for('books') }}">
+            <button class="dark-button">Explore More &#8594;</button>
+        </a>
+    </div>
+</body>
+</html>

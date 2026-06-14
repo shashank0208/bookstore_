@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login / Sign Up</title>
+<style>
+    body {
+        background-color: #121212;
+        font-family: 'Poppins', Arial, sans-serif;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(https://media.istockphoto.com/id/1790848330/photo/closeup-of-hardcover-books-piled-on-a-table.jpg?s=612x612&w=0&k=20&c=ZmZhxCA04T4N2lEhhTJfKCtbZpfN3q2YIxuwWchYHH8=);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 30px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+        width: 320px;
+    }
+
+    h1 { text-align: center; }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .tabs button {
+        flex: 1;
+        padding: 10px;
+        background: #1c1c1c;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .tabs button.active {
+        background: #f9f3f3;
+        color: #111;
+        font-weight: bold;
+    }
+
+    form { display: flex; flex-direction: column; gap: 10px; }
+
+    .in {
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: 1px solid white;
+        border-radius: 10px;
+        padding: 8px;
+    }
+
+    .button {
+        background-color: #f9f3f3;
+        color: #0f0505;
+        font-size: 16px;
+        border: 2px solid #111111;
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
+    .button:hover { background-color: #080808; color: #f3eaea; }
+
+    .message { color: #6dff6d; text-align: center; }
+    .error { color: #ff6d6d; text-align: center; }
+
+    .hidden { display: none; }
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1 style="text-align:center;">Welcome</h1>
+
+    <div class="tabs">
+        <button id="loginTab" class="active" onclick="showTab('login')">Login</button>
+        <button id="signupTab" onclick="showTab('signup')">Sign Up</button>
+    </div>
+
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    {% if message %}<p class="message">{{ message }}</p>{% endif %}
+
+    <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+        <label>Email</label>
+        <input class="in" type="email" name="email" placeholder="you@example.com" required>
+        <label>Password</label>
+        <input class="in" type="password" name="password" placeholder="Enter password" required>
+        <button class="button" type="submit">Login</button>
+    </form>
+
+    <form id="signupForm" class="hidden" method="POST" action="{{ url_for('signup') }}">
+        <label>Email</label>
+        <input class="in" type="email" name="email" placeholder="you@example.com" required>
+        <label>Password</label>
+        <input class="in" type="password" name="password" placeholder="Choose a password" minlength="6" required>
+        <button class="button" type="submit">Sign Up</button>
+    </form>
+
+    <div style="text-align:center; margin-top: 15px;">
+        <a href="{{ url_for('home') }}"><button class="button">&larr; Back to Home</button></a>
+    </div>
+</div>
+
+<script>
+    function showTab(tab) {
+        document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+        document.getElementById('signupForm').classList.toggle('hidden', tab !== 'signup');
+        document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+        document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+    }
+</script>
+</body>
+</html>

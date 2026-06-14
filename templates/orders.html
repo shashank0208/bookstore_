@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders</title>
+    <style>
+        body {
+            background-color: #060505;
+            color: #f7f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #1b1a1a;
+            font-size: 18px;
+            padding: 10px;
+        }
+        .order-card {
+            background: #1c1c1c;
+            border-radius: 10px;
+            margin: 20px auto;
+            padding: 15px 20px;
+            max-width: 500px;
+        }
+        .order-card h3 { margin-top: 0; }
+        .order-card ul { padding-left: 20px; }
+        .total { font-weight: bold; color: #ffcc00; }
+        .empty { text-align: center; margin-top: 60px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('topseller') }}">Top Seller</a>
+        <a href="{{ url_for('authors') }}">Authors</a>
+        <a href="{{ url_for('genre') }}">Genre</a>
+        <a href="{{ url_for('audiobooks') }}">Audio Books</a>
+        {% if is_admin %}<a href="{{ url_for('addbooks') }}">Add Books</a>{% endif %}
+        <a href="{{ url_for('view_cart') }}">Cart</a>
+        {% if current_user %}
+            <a href="{{ url_for('orders') }}">My Orders</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+
+    <h1 style="text-align:center;">My Orders</h1>
+
+    {% if orders|length == 0 %}
+        <p class="empty">You haven't placed any orders yet.</p>
+    {% else %}
+        {% for order in orders %}
+        <div class="order-card">
+            <h3>Order #{{ order.id }} &mdash; {{ order.status }}</h3>
+            <p>{{ order.created_at }}</p>
+            <ul>
+                {% for item in order.order_items %}
+                <li>{{ item.title }} &times; {{ item.quantity }} = ₹{{ item.subtotal }}</li>
+                {% endfor %}
+            </ul>
+            <p class="total">Total: ₹{{ order.total }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

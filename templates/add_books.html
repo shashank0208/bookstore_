@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 420px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea, button {
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #1b1a1a;
+            font-size: 16px;
+        }
+
+        .cover-fetch-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .cover-fetch-row button {
+            margin-bottom: 0;
+            flex-shrink: 0;
+            background-color: #444;
+        }
+        .cover-fetch-row button:hover {
+            background-color: #222;
+        }
+
+        #cover-results {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        #cover-results img {
+            height: 130px;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.15s ease-in-out;
+        }
+        #cover-results img:hover,
+        #cover-results img.selected {
+            border-color: #007BFF;
+        }
+
+        #cover-status {
+            font-size: 13px;
+            color: #666;
+            margin: 4px 0 10px;
+        }
+
+        #preview-wrapper {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #preview-wrapper img {
+            max-height: 180px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('view_cart') }}">Cart</a>
+    </div>
+
+    <h2 style="text-align: center;">Add a New Book</h2>
+    <form action="{{ url_for('add_book') }}" method="POST">
+        <input type="text" id="title" name="title" placeholder="Title" required>
+        <input type="text" id="author" name="author" placeholder="Author" required>
+
+        <div class="cover-fetch-row">
+            <button type="button" onclick="fetchCovers()">Fetch Cover Options</button>
+        </div>
+        <div id="cover-status"></div>
+        <div id="cover-results"></div>
+
+        <div id="preview-wrapper">
+            <img id="cover-preview" alt="Selected cover preview">
+        </div>
+
+        <input type="number" name="price" placeholder="Price" step="0.01" min="0" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <input type="text" id="cover_image" name="cover_image" placeholder="Cover Image URL (auto-filled, or paste your own)" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+
+        <label>
+            <input type="checkbox" name="top_seller" value="1"> Mark as Top Seller
+        </label>
+
+        <input type="number" name="stock" placeholder="Stock Quantity" min="0" required>
+
+        <button type="submit">Add Book</button>
+    </form>
+
+    <script>
+        async function fetchCovers() {
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+            const statusEl = document.getElementById('cover-status');
+            const resultsEl = document.getElementById('cover-results');
+
+            if (!title) {
+                statusEl.textContent = "Enter a title first.";
+                return;
+            }
+
+            statusEl.textContent = "Searching Open Library...";
+            resultsEl.innerHTML = "";
+
+            try {
+                let url = `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}`;
+                if (author) {
+                    url += `&author=${encodeURIComponent(author)}`;
+                }
+                url += "&limit=8";
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                const withCovers = (data.docs || []).filter(d => d.cover_i);
+
+                if (withCovers.length === 0) {
+                    statusEl.textContent = "No covers found. Try a different title/author, or paste a URL manually.";
+                    return;
+                }
+
+                statusEl.textContent = `Found ${withCovers.length} option(s). Click one to select.`;
+
+                withCovers.forEach(doc => {
+                    const img = document.createElement('img');
+                    img.src = `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`;
+                    img.title = `${doc.title} — ${(doc.author_name || []).join(', ')}`;
+                    img.onclick = () => selectCover(`https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`, img);
+                    resultsEl.appendChild(img);
+                });
+            } catch (err) {
+                console.error(err);
+                statusEl.textContent = "Error fetching covers. Check your connection or paste a URL manually.";
+            }
+        }
+
+        function selectCover(url, imgEl) {
+            document.getElementById('cover_image').value = url;
+
+            document.querySelectorAll('#cover-results img').forEach(i => i.classList.remove('selected'));
+            imgEl.classList.add('selected');
+
+            const preview = document.getElementById('cover-preview');
+            preview.src = url;
+            preview.style.display = 'inline-block';
+        }
+
+        // Live preview if user pastes a URL manually
+        document.getElementById('cover_image').addEventListener('input', (e) => {
+            const preview = document.getElementById('cover-preview');
+            const val = e.target.value.trim();
+            if (val) {
+                preview.src = val;
+                preview.style.display = 'inline-block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cstyle.css') }}">
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #1b1a1a;
+            font-size: 18px;
+            padding: 10px;
+        }
+        #cart-items div.line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        #cart-items .qty-controls button {
+            width: 28px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('topseller') }}">Top Seller</a>
+        <a href="{{ url_for('authors') }}">Authors</a>
+        <a href="{{ url_for('genre') }}">Genre</a>
+        <a href="{{ url_for('audiobooks') }}">Audio Books</a>
+        {% if is_admin %}<a href="{{ url_for('addbooks') }}">Add Books</a>{% endif %}
+        <a href="{{ url_for('view_cart') }}">Cart</a>
+        {% if current_user %}
+            <a href="{{ url_for('orders') }}">My Orders</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+
+    <h2 style="text-align:center;">Your Cart</h2>
+    <div id="cart-items" style="text-align:center;"></div>
+    <h3 style="text-align:center;">Total: ₹<span id="total">0</span></h3>
+    <div style="text-align: center;">
+        <button class="place-order" onclick="placeOrder()">Place Order</button>
+    </div>
+
+    <script>
+        const isLoggedIn = {{ 'true' if current_user else 'false' }};
+
+        function renderCart() {
+            const cart = getCart();
+            let container = document.getElementById("cart-items");
+            let total = 0;
+            container.innerHTML = "";
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>Your cart is empty.</p>";
+            }
+
+            cart.forEach((item, index) => {
+                const lineTotal = item.price * item.quantity;
+                total += lineTotal;
+                container.innerHTML += `
+                    <div class="line">
+                        <strong>${item.title}</strong> - ₹${item.price}
+                        <div class="qty-controls">
+                            <button onclick="changeQty(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="changeQty(${index}, 1)">+</button>
+                        </div>
+                        = ₹${lineTotal.toFixed(2)}
+                        <button onclick="removeItem(${index})">Remove</button>
+                    </div>`;
+            });
+
+            document.getElementById("total").innerText = total.toFixed(2);
+        }
+
+        function changeQty(index, delta) {
+            let cart = getCart();
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart(cart);
+            renderCart();
+        }
+
+        function removeItem(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCart();
+        }
+
+        function placeOrder() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert("Cart is empty!");
+                return;
+            }
+
+            if (!isLoggedIn) {
+                alert("Please log in to place an order.");
+                window.location.href = "{{ url_for('login') }}";
+                return;
+            }
+
+            fetch('/place_order', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({cart: cart})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(`Order placed successfully! Total: ₹${data.total}`);
+                    localStorage.removeItem("cart");
+                    window.location.href = "{{ url_for('orders') }}";
+                }
+            })
+            .catch(err => {
+                console.error("Order failed", err);
+                alert("Something went wrong");
+            });
+        }
+
+        renderCart();
+    </script>
+</body>
+</html>

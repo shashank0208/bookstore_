@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors</title>
+    <style>
+        body {
+            background-color: #060505;
+            color: #f7f4f4;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #1b1a1a;
+            font-size: 18px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+        .navbar a:hover {
+            color: #0f0e0e;
+            text-shadow: 0 0 5px #141313, 0 0 10px #101010, 0 0 15px #850585, 0 0 20px #a30da3;
+        }
+
+        .authors {
+            display: flex;
+            flex-direction: row;
+            margin: 40px;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        .author-card {
+            text-align: center;
+        }
+        .img {
+            background-color: #0c0b0b;
+            border-radius: 10px;
+            padding: 10px;
+            height: 300px;
+            width: 200px;
+            border: 2px solid white;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('topseller') }}">Top Seller</a>
+        <a href="{{ url_for('authors') }}">Authors</a>
+        <a href="{{ url_for('genre') }}">Genre</a>
+        <a href="{{ url_for('audiobooks') }}">Audio Books</a>
+        {% if is_admin %}<a href="{{ url_for('addbooks') }}">Add Books</a>{% endif %}
+        <a href="{{ url_for('view_cart') }}">Cart</a>
+        {% if current_user %}
+            <a href="{{ url_for('orders') }}">My Orders</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+
+    <h1 style="text-align:center;">Featured Authors</h1>
+
+    <div class="authors">
+        <div class="author-card">
+            <img class="img" src="https://m.media-amazon.com/images/I/81McpdT4NQL._SL1500_.jpg" alt="Agatha Christie">
+            <p>Agatha Christie</p>
+        </div>
+    </div>
+</body>
+</html>

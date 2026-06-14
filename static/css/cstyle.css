@@ -1,0 +1,106 @@
+#cart-items div {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    color: black;
+}
+
+#cart-items button {
+    margin-left: 10px;
+    background-color: #ff5555;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cart-items button:hover {
+    background-color: #cc0000;
+}
+
+button.place-order {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button.place-order:hover {
+    background-color: #388e3c;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+#cart-items {
+    max-width: 600px;
+    margin: 0 auto;
+}
+body {
+    margin: 0;
+    background-color: #020202;
+    background-image: ;
+   
+    border-color: #070707;
+    color: #fff9fd;
+}
+
+
+
+.navbar
+{
+    background-color: rgb(251, 245, 245);
+    text-align: center;
+    padding: 40px;
+    text-transform: capitalize;
+    color: #6f43b5;
+    
+}
+ 
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 15px;
+    background-color: #f8f8f8;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #1b1a1a;
+    font-size: 18px;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+}
+
+.navbar a:hover {
+    color: #0f0e0e;
+    text-shadow: 0 0 5px #141313, 0 0 10px #101010, 0 0 15px #850585, 0 0 20px #a30da3;
+}
+
+.navbar a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #090909;
+    transform: scaleY(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+.navbar a:hover::after {
+    transform: scaleY(1);
+    transform-origin: bottom left;
+}

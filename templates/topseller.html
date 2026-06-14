@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Sellers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+
+    <style>
+        .img {
+            height: 250px;
+            width: 200px;
+            object-fit: cover;
+            padding: 3px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background-color: #f8f8f8;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #1b1a1a;
+            font-size: 18px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .navbar a:hover {
+            color: #0f0e0e;
+            text-shadow: 0 0 5px #141313, 0 0 10px #101010, 0 0 15px #850585, 0 0 20px #a30da3;
+        }
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #090909;
+            transform: scaleY(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+
+        .navbar a:hover::after {
+            transform: scaleY(1);
+            transform-origin: bottom left;
+        }
+
+        .books {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .book {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            width: 220px;
+            text-align: center;
+            background: #f9f9f9;
+        }
+
+        .details h3 {
+            margin: 10px 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('books') }}">Books</a>
+        <a href="{{ url_for('topseller') }}">Top Seller</a>
+        <a href="{{ url_for('authors') }}">Authors</a>
+        <a href="{{ url_for('genre') }}">Genre</a>
+        <a href="{{ url_for('audiobooks') }}">Audio Books</a>
+        {% if is_admin %}<a href="{{ url_for('addbooks') }}">Add Books</a>{% endif %}
+        <a href="{{ url_for('view_cart') }}">Cart</a>
+        {% if current_user %}
+            <a href="{{ url_for('orders') }}">My Orders</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+
+    <h2 style="text-align:center;">These are the top sellers</h2>
+    <div class="books">
+        {% for book in books %}
+        <div class="book">
+            <img class="img" src="{{ book.cover_image }}" alt="{{ book.title }}">
+            <div class="details">
+                <h3>{{ book.title }}</h3>
+                <p>{{ book.author }}</p>
+                <p>{{ book.genre }}</p>
+                <p>₹{{ book.price }}</p>
+                <button onclick='addToCart({{ book.id }}, {{ book.title|tojson }}, {{ book.price }})'>Add to Cart</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
